@@ -32,7 +32,7 @@ type FormDataType = {
 }
 const length = maxLengthCreator(20)
 const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
-    const {handleSubmit} = props;
+    const {handleSubmit,error} = props;
 
     return (
         <form onSubmit={handleSubmit}>
@@ -40,8 +40,8 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
             <div><Field name="password" component={Input} validate={[required, length]} type={"password"}
                         placeholder={"Password"}/></div>
             <div><Field name="rememberMe" component={Input} type={"checkbox"}/>remember me</div>
-            {props.error && <div className={style.formSummaryError}>
-                {props.error}
+            {error && <div className={style.formSummaryError}>
+                {error}
             </div>}
             <button>Login</button>
         </form>

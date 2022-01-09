@@ -1,0 +1,11 @@
+.userPhoto{
+    width: 150px;
+
+}
+.selectedPage{
+    color:red;
+}
+.wrap{
+    display: flex;
+    flex-wrap: wrap;
+}
