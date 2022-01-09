@@ -1,7 +1,6 @@
 import {usersAPI} from "../api/api";
 import {Dispatch} from "redux";
-import {ThunkAction} from "redux-thunk";
-import {AppStateType} from "./redux-store";
+import {updateObjectInArray} from "../utils/object-helpers";
 
 const FOLLOW = 'FOLLOW-POST';
 const UNFOLLOW = 'UNFOLLOW';
@@ -38,22 +37,24 @@ const usersReducer = (state: InitialState = initialState, action: ActionType): I
         case FOLLOW:
             return {
                 ...state,
-                users: state.users.map(u => {
+                users: updateObjectInArray(state.users, action.userId, "id", {followed: true})
+                /*state.users.map(u => {
                     if (u.id === action.userId) {
                         return {...u, followed: true};
                     }
                     return u;
-                })
+                })*/
             }
         case UNFOLLOW:
             return {
                 ...state,
-                users: state.users.map(u => {
+                users: updateObjectInArray(state.users, action.userId, "id", {followed: false})
+                /*state.users.map(u => {
                     if (u.id === action.userId) {
                         return {...u, followed: false};
                     }
                     return u;
-                })
+                })*/
             }
         case SET_USERS: {
             return {...state, users: action.users}
@@ -134,42 +135,35 @@ type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionType>
 
 
 //_________________________________________________________________
-export const getUsersThunkCreator = (currentPage, pageSize) => {
-    return (dispatch) => {
-        dispatch(setIsFetchingAC(true));
-        dispatch(setCurrentPageAC(currentPage))
-        usersAPI.getUsers(currentPage, pageSize)
-            .then(data => {
-                dispatch(setIsFetchingAC(false));
-                dispatch(setUsersAC(data.items));
-                dispatch(setUsersTotalCountAC(data.totalCount));
-                dispatch(setCurrentPageAC(currentPage))
-            })
-    };
+export const getUsersThunkCreator = (currentPage, pageSize) => async (dispatch) => {
+    dispatch(setIsFetchingAC(true));
+    dispatch(setCurrentPageAC(currentPage))
+    let data = await usersAPI.getUsers(currentPage, pageSize)
+    dispatch(setIsFetchingAC(false));
+    dispatch(setUsersAC(data.items));
+    dispatch(setUsersTotalCountAC(data.totalCount));
+    dispatch(setCurrentPageAC(currentPage))
 }
-export const follow = (userId: number) => {
-    return (dispatch: Dispatch) => {
-        dispatch(toggleFollowingProgress(true, userId));
-        usersAPI.follow(userId)
-            .then(response => {
-                if (response.data.resultCode === 0) {
-                    dispatch(followACSuccess(userId));
-                }
-                dispatch(toggleFollowingProgress(false, userId));
-            });
-    };
+
+
+const followUnfollowFlow = async(dispatch,userId,apiMethod,actionCreator) => {
+    dispatch(toggleFollowingProgress(true, userId));
+    let response = await apiMethod(userId)
+    if (response.data.resultCode === 0) {
+        dispatch(actionCreator(userId));
+    }
+    dispatch(toggleFollowingProgress(false, userId));
 }
-export const unfollow = (userId) => {
-    return (dispatch: Dispatch) => {
-        dispatch(toggleFollowingProgress(true, userId));
-        usersAPI.unfollow(userId)
-            .then(response => {
-                if (response.data.resultCode === 0) {
-                    dispatch(unfollowACSuccess(userId));
-                }
-                dispatch(toggleFollowingProgress(false, userId));
-            });
-    };
+
+export const follow = (userId: number) => async (dispatch: Dispatch) => {
+    let apiMethod = usersAPI.follow.bind(usersAPI);
+    let actionCreator = followACSuccess;
+    followUnfollowFlow(dispatch,userId,apiMethod,actionCreator)
+}
+export const unfollow = (userId) => async (dispatch: Dispatch) => {
+    let apiMethod = usersAPI.unfollow.bind(usersAPI);
+    let actionCreator = unfollowACSuccess;
+    followUnfollowFlow(dispatch,userId,apiMethod,actionCreator)
 }
 
 

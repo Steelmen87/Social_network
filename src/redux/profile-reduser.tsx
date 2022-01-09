@@ -105,7 +105,6 @@ export const getUsersProFile = (userId: number) => async (dispatch: any) => {
 }
 export const getStatus = (userId: number) => async (dispatch: any) => {
     let response = await profileAPI.getStatus(userId);
-
     dispatch(setStatus(response));
 }
 export const updateStatus = (status: string) => async (dispatch: any) => {

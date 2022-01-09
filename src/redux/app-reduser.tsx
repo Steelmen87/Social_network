@@ -1,6 +1,4 @@
-import {Dispatch} from "redux";
-import {authAPI} from "../api/api";
-import {setAuthUserData, getAuthUserData} from "./auth-reduser";
+import {getAuthUserData} from "./auth-reduser";
 
 const SET_INITIALIZED_SUCCESS = 'SET_INITIALIZED_SUCCESS';
 
@@ -28,12 +26,9 @@ export const InitializedSuccess = () => ({
     type: SET_INITIALIZED_SUCCESS
 } as const)
 
-export const InitializeApp = () => (dispatch:any) => {
-    let promise  = dispatch(getAuthUserData())
-    promise.then(() => {
-        dispatch(InitializedSuccess())
-    })
-
+export const InitializeApp = () => async (dispatch: any) => {
+    let promise = await dispatch(getAuthUserData())
+    dispatch(InitializedSuccess())
 }
 
 export default appReducer;
