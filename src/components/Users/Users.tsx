@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {setFilter, UserType} from "../../redux/users-reduser";
 import {useDispatch} from "react-redux";
-import Paginator from "../Paginator/Paginator";
+import PaginatorX from "../Paginator/PaginatorX";
 import User from "./User";
 
 type PropsType = {
@@ -33,14 +33,15 @@ let Users: React.FC<PropsType> = (props) => {
 
 
     return <div>
-        <input placeholder={"search"} value={search} onChange={onSearchChange}/>
-        <div><strong>Total Users Count: {totalUsersCount}</strong></div>
-        <Paginator
-            totalUsersCount={totalUsersCount}
+        <PaginatorX
+            totalItemsCount={totalUsersCount}
             pageSize={pageSize}
             currentPage={currentPage}
             onPageChanged={onPageChanged}
         />
+        <input placeholder={"search"} value={search} onChange={onSearchChange}/>
+        <div><strong>Total Users Count: {totalUsersCount}</strong></div>
+
         <User {...props}/>
     </div>
 }
