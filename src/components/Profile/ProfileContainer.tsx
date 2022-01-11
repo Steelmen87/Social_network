@@ -12,7 +12,7 @@ type mapStateToPropsType = {
     profile: any
     isAuth: boolean
     status: string
-    authorizedUserId:string
+    authorizedUserId: string
 
 }
 type mapDispatchPropsType = {
@@ -25,8 +25,7 @@ type OwnPropsType = mapStateToPropsType & mapDispatchPropsType
 type PropsType = RouteComponentProps<pathParamsType> & OwnPropsType
 
 class ProfileContainer extends React.Component<PropsType> {
-
-    componentDidMount() {
+    refreshProfile() {
         let userId = this.props.match.params.userId;
         if (!userId) {
             userId = this.props.authorizedUserId;
@@ -36,6 +35,15 @@ class ProfileContainer extends React.Component<PropsType> {
         }
         this.props.getUsersProFile(userId);
         this.props.getStatus(userId);
+    }
+
+    componentDidMount() {
+        this.refreshProfile();
+    }
+
+    componentDidUpdate(prevProps: Readonly<PropsType>, prevState: Readonly<{}>, snapshot?: any) {
+        if (this.props.match.params.userId !== prevProps.match.params.userId)
+            this.refreshProfile();
     }
 
     render() {
@@ -74,16 +82,16 @@ export type ProfileType = {
         }
     },
     status: string,
-    authorizedUserId:string,
-    isAuth:boolean
+    authorizedUserId: string,
+    isAuth: boolean
 
 }
 
 let mapStateToProps = (state): ProfileType => ({
     profile: state.profilePage.profile,
     status: state.profilePage.status,
-    authorizedUserId:state.auth.id,
-    isAuth:state.auth.isAuth,
+    authorizedUserId: state.auth.id,
+    isAuth: state.auth.isAuth,
 });
 
 
