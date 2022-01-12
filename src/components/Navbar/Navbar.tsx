@@ -1,7 +1,6 @@
 import React from "react";
 import s from './Navbar.module.css'
-import { NavLink } from "react-router-dom";
-import FriendsContainer from "../Friends/FriendsContainer";
+import {NavLink} from "react-router-dom";
 
 const Navbar = () => {
     return (<div>
@@ -17,7 +16,6 @@ const Navbar = () => {
                 <br/>
                 <div className={s.Friends}>{/*<a href="/dialogs" className={s.a}>Friends</a>*/}Friends</div>
                 <br/>
-                {/*<div><FriendsContainer /></div>*/}
             </nav>
 
         </div>

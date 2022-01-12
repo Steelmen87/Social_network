@@ -4,10 +4,10 @@ import {Link, Route} from 'react-router-dom'
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-import DialogsContainer from "./components/Dialogs/DialogsContainer";
+
 import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainer from "./components/Profile/ProfileContainer";
-import LoginPage from "./components/Login/Login";
+
 import {InitializeApp, InitialStateType} from "./redux/app-reduser";
 import {connect} from "react-redux";
 import {compose} from "redux";
@@ -16,6 +16,13 @@ import 'antd/dist/antd.css'
 import {LaptopOutlined, NotificationOutlined, UserOutlined} from '@ant-design/icons';
 import {Breadcrumb, Layout, Menu} from "antd";
 import {AppHeader} from "./components/Header/Header";
+import {withSuspense} from './hoc/withSuspense';
+
+//import LoginPage from "./components/Login/Login";
+const LoginPage = React.lazy(() => import('./components/Login/Login'));
+
+//import DialogsContainer from "./components/Dialogs/DialogsContainer";
+const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 
 class App extends React.Component<any, any> {
     componentDidMount() {
@@ -27,10 +34,10 @@ class App extends React.Component<any, any> {
             return <Preloader/>
         }*/
         const {SubMenu} = Menu;
-        const { Content, Footer, Sider} = Layout;
+        const {Content, Footer, Sider} = Layout;
         return (
             <Layout>
-                <AppHeader />
+                <AppHeader/>
                 <Content style={{padding: '0 50px'}}>
                     <Breadcrumb style={{margin: '16px 0'}}>
                         <Breadcrumb.Item>Home</Breadcrumb.Item>
@@ -48,13 +55,13 @@ class App extends React.Component<any, any> {
                                 <SubMenu key="sub1" icon={<UserOutlined/>} title="My Profile">
                                     <Menu.Item key="1"><Link to="/profile">Profile</Link> </Menu.Item>
                                     <Menu.Item key="2"> <Link to="/dialogs">Messages</Link></Menu.Item>
-                                    <Menu.Item key="3">option3</Menu.Item>
+
                                 </SubMenu>
                                 <SubMenu key="sub2" icon={<LaptopOutlined/>} title="Developers">
                                     <Menu.Item key="5"><Link to="/developers">Users</Link></Menu.Item>
-                                    <Menu.Item key="6">option6</Menu.Item>
+                                    {/*<Menu.Item key="6">option6</Menu.Item>
                                     <Menu.Item key="7">option7</Menu.Item>
-                                    <Menu.Item key="8">option8</Menu.Item>
+                                    <Menu.Item key="8">option8</Menu.Item>*/}
                                 </SubMenu>
                                 <SubMenu key="sub3" icon={<NotificationOutlined/>} title="subnav 3">
                                     <Menu.Item key="9">option9</Menu.Item>
@@ -64,14 +71,14 @@ class App extends React.Component<any, any> {
                                 </SubMenu>
                             </Menu>
                         </Sider>
-                        <Content style={{padding: '0 24px', minHeight: 280}}>
-                            <Route path="/dialogs/" render={() => <DialogsContainer/>}/>
+                        <Content style={{padding: '0 24px', minHeight: 200}}>
+                            <Route path="/dialogs/" render={withSuspense(DialogsContainer)}/>
                             <Route path="/profile/:userId?" render={() => <ProfileContainer/>}/>
                             <Route path="/news/" render={() => <News/>}/>
                             <Route path="/music/" render={() => <Music/>}/>
                             <Route path="/settings/" render={() => <Settings/>}/>
                             <Route path="/developers/" render={() => <UsersContainer/>}/>
-                            <Route path="/login/" render={() => <LoginPage/>}/>
+                            <Route path="/login/" render={withSuspense(LoginPage)}/>
                         </Content>
                     </Layout>
                 </Content>
