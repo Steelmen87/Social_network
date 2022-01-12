@@ -27,7 +27,7 @@ class App extends React.Component<any, any> {
             return <Preloader/>
         }*/
         const {SubMenu} = Menu;
-        const {Header, Content, Footer, Sider} = Layout;
+        const { Content, Footer, Sider} = Layout;
         return (
             <Layout>
                 <AppHeader />
