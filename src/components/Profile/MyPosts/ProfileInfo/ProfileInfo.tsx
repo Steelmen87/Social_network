@@ -21,8 +21,37 @@ const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto}) => {
                 <ProfileStatusWithHooks status={status}
                                         updateStatus={updateStatus}/>
                 {isOwner && <input type={"file"} onChange={onMainPhotoSelected}/>}
+                <div>
+                    <div>
+                        <strong>Full name: </strong>{profile.fullName}
+                    </div>
+                    <div>
+                        <strong>Looking for a job:</strong>{profile.lookingForAJob ? "yes" : "no"}
+                    </div>
+                    {profile.lookingForAJob &&
+                    <div>
+                        <strong>
+                            My professional skills:{profile.lookingForAJobDescription}
+                        </strong>
+                    </div>}
+                    <div>
+                        <strong>About me:</strong>{profile.aboutMe}
+                    </div>
+                    <div>
+                        <strong>Contacts :</strong>{Object.keys(profile.contacts).map(key => {
+                        return <Contacts key={key} contactTitle={key} contactValue={profile.contacts[key]}/>
+                    })}
+                    </div>
+                </div>
             </div>
         </div>
     )
+
 }
+
+const Contacts = ({contactTitle, contactValue}) => {
+    return <div className={s.padding}><strong>{contactTitle} :</strong> {contactValue}</div>
+}
+
 export default ProfileInfo;
+
