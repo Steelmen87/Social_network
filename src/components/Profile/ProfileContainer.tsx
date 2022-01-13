@@ -6,7 +6,7 @@ import {RouteComponentProps, withRouter} from "react-router";
 import {compose} from "redux";
 
 type pathParamsType = {
-    userId: number
+    userId: string
 }
 type mapStateToPropsType = {
     profile: any
@@ -43,7 +43,7 @@ class ProfileContainer extends React.Component<PropsType> {
     }
 
     componentDidUpdate(prevProps: Readonly<PropsType>, prevState: Readonly<{}>, snapshot?: any) {
-        if (this.props.match.params.userId !== prevProps.match.params.userId)
+        if (this.props.match.params.userId != prevProps.match.params.userId)
             this.refreshProfile();
     }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {Link, Route} from 'react-router-dom'
+import {Link, Route, Redirect} from 'react-router-dom'
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
@@ -72,6 +72,8 @@ class App extends React.Component<any, any> {
                             </Menu>
                         </Sider>
                         <Content style={{padding: '0 24px', minHeight: 200}}>
+                            <Route exact path='/'
+                                   render={() => <Redirect to={'/profile'}/>}/>
                             <Route path="/dialogs/" render={withSuspense(DialogsContainer)}/>
                             <Route path="/profile/:userId?" render={() => <ProfileContainer/>}/>
                             <Route path="/news/" render={() => <News/>}/>
