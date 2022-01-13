@@ -3,6 +3,8 @@ import s from './ProfileInfo.module.css';
 import {Preloader} from "../../../common/preloader/Preloader";
 import ProfileStatusWithHooks from "./ProfileStatusFunction";
 import userPhoto from "../../../../assets/images/user.png"
+import Contacts from "./Contacts";
+import ProfileDataForm from "./ProfileDataForm";
 
 const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto}) => {
     const [editMode, setEditMode] = useState(false)
@@ -63,35 +65,6 @@ const ProfileData = ({profile, isOwner,goToEditMode}) => {
         })}
         </div>
     </div>
-}
-const ProfileDataForm = ({profile}) => {
-    return <div>
-        FORM
-        <div>
-            <strong>Full name: </strong>{profile.fullName}
-        </div>
-        <div>
-            <strong>Looking for a job:</strong>{profile.lookingForAJob ? "yes" : "no"}
-        </div>
-        {profile.lookingForAJob &&
-        <div>
-            <strong>
-                My professional skills:{profile.lookingForAJobDescription}
-            </strong>
-        </div>}
-        <div>
-            <strong>About me:</strong>{profile.aboutMe}
-        </div>
-        <div>
-            <strong>Contacts :</strong>{Object.keys(profile.contacts).map(key => {
-            return <Contacts key={key} contactTitle={key} contactValue={profile.contacts[key]}/>
-        })}
-        </div>
-    </div>
-}
-
-const Contacts = ({contactTitle, contactValue}) => {
-    return <div className={s.padding}><strong>{contactTitle} :</strong> {contactValue}</div>
 }
 
 export default ProfileInfo;
