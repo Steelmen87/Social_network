@@ -3,11 +3,12 @@ import Contacts from "./Contacts";
 import { createField, Input } from "../../../common/FormsControls/FormsControls";
 import {reduxForm} from "redux-form";
 
-const ProfileDataForm = ({profile}) => {
-    return <form>
-        <button onClick={()=>{}}>Save</button>
+const ProfileDataForm = ({profile,handleSubmit,error}) => {
+
+    return <form onSubmit={handleSubmit}>
+        <button>Save</button>
         <div>
-            <strong>Full name: </strong>{createField("full name", "fullName", {}, Input)}{profile.fullName}
+            <strong>Full name: </strong>{createField("full name", "fullName", [], Input)}
         </div>
         <div>
             <strong>Looking for a job:</strong>{profile.lookingForAJob ? "yes" : "no"}

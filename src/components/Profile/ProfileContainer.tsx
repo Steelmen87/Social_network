@@ -6,7 +6,7 @@ import {RouteComponentProps, withRouter} from "react-router";
 import {compose} from "redux";
 
 type pathParamsType = {
-    userId: string
+    userId: number
 }
 type mapStateToPropsType = {
     profile: any

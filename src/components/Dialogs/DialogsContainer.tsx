@@ -1,5 +1,5 @@
 
-import {addAnswerActionCreator, DialogType} from "../../redux/dialogs-reduser";
+import {addAnswerActionCreator} from "../../redux/dialogs-reduser";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 import {compose, Dispatch,} from "redux";

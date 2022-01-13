@@ -16,6 +16,9 @@ const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto}) => {
             savePhoto(e.target.files[0])
         }
     }
+    const onSubmit = (formData) => {
+        console.log(formData)
+    }
 
     return (
         <div className={s.descriptionBlock}>
@@ -27,11 +30,16 @@ const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto}) => {
                 {isOwner && <input type={"file"} onChange={onMainPhotoSelected}/>}
 
                 {editMode
-                    ? <ProfileDataForm profile={profile}/>
+                    ? <ProfileDataForm
+                        initialValues={profile}
+                        profile={profile}
+                        onSubmit={onSubmit}/>
                     : <ProfileData
                         profile={profile}
                         isOwner={isOwner}
-                        goToEditMode={() => {setEditMode(true)}}/>}
+                        goToEditMode={() => {
+                            setEditMode(true)
+                        }}/>}
 
             </div>
         </div>
@@ -39,7 +47,7 @@ const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto}) => {
 
 }
 
-const ProfileData = ({profile, isOwner,goToEditMode}) => {
+const ProfileData = ({profile, isOwner, goToEditMode}) => {
     return <div>
         {isOwner && <div>
             <button onClick={goToEditMode}>Edit</button>
@@ -51,11 +59,11 @@ const ProfileData = ({profile, isOwner,goToEditMode}) => {
             <strong>Looking for a job:</strong>{profile.lookingForAJob ? "yes" : "no"}
         </div>
         {profile.lookingForAJob &&
-        <div>
-            <strong>
-                My professional skills:{profile.lookingForAJobDescription}
-            </strong>
-        </div>}
+            <div>
+                <strong>
+                    My professional skills:{profile.lookingForAJobDescription}
+                </strong>
+            </div>}
         <div>
             <strong>About me:</strong>{profile.aboutMe}
         </div>
