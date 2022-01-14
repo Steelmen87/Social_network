@@ -1,26 +1,24 @@
 import React from "react";
 import Contacts from "./Contacts";
-import { createField, Input } from "../../../common/FormsControls/FormsControls";
+import {createField, Input, Textarea} from "../../../common/FormsControls/FormsControls";
 import {reduxForm} from "redux-form";
 
-const ProfileDataForm = ({profile,handleSubmit,error}) => {
-
+const ProfileDataForm = ({profile, handleSubmit, error}) => {
     return <form onSubmit={handleSubmit}>
-        <button>Save</button>
+        <div><button>Save</button></div>
         <div>
-            <strong>Full name: </strong>{createField("full name", "fullName", [], Input)}
+            <strong>Full name: </strong> {createField("full name", "fullName", [], Input)}
         </div>
         <div>
-            <strong>Looking for a job:</strong>{profile.lookingForAJob ? "yes" : "no"}
+            <strong>Looking for a job:</strong> {createField("", "lookingForAJob", [], Input, {type: "checkbox"})}
         </div>
-        {profile.lookingForAJob &&
         <div>
             <strong>
-                My professional skills:{profile.lookingForAJobDescription}
-            </strong>
-        </div>}
+                My professional skills: </strong>
+            {createField("My professional skills", "lookingForAJobDescription", [], Textarea)}
+        </div>
         <div>
-            <strong>About me:</strong>{profile.aboutMe}
+            <strong>About me: </strong> {createField("about me", "aboutMe", [], Textarea)}
         </div>
         <div>
             {/*<strong>Contacts :</strong>{Object.keys(profile.contacts).map(key => {

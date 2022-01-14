@@ -1,105 +1,90 @@
-import React from "react";
+import React from 'react';
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {getStatus, getUsersProFile, savePhoto, updateStatus} from "../../redux/profile-reduser";
-import {RouteComponentProps, withRouter} from "react-router";
+import {getStatus, getUsersProFile, savePhoto, saveProfile, updateStatus} from "../../redux/profile-reduser";
+import {withRouter, RouteComponentProps} from "react-router-dom";
 import {compose} from "redux";
+import {AppStateType} from '../../redux/redux-store';
+import {ProfileType} from '../../type/type';
 
-type pathParamsType = {
+type MapPropsType = ReturnType<typeof mapStateToProps>
+type DispatchPropsType = {
+    getUserProfile: (userId: number) => void
+    getStatus: (userId: number) => void
+    updateStatus: (status: string) => void
+    savePhoto: (file: File) => void
+    saveProfile: (profile: ProfileType) => Promise<any>
+}
+
+type PathParamsType = {
     userId: string
 }
-type mapStateToPropsType = {
-    profile: any
-    isAuth: boolean
-    status: string
-    authorizedUserId: string
 
-}
-type mapDispatchPropsType = {
-    getUsersProFile: (userId: string) => void
-    getStatus: (userId: string) => void
-    updateStatus: (status: string) => void
-    savePhoto: (file:any) => void
-}
-type OwnPropsType = mapStateToPropsType & mapDispatchPropsType
-
-type PropsType = RouteComponentProps<pathParamsType> & OwnPropsType
+type PropsType = MapPropsType & DispatchPropsType & RouteComponentProps<PathParamsType>;
 
 class ProfileContainer extends React.Component<PropsType> {
+    constructor(props: PropsType) {
+        super(props);
+    }
+
     refreshProfile() {
-        let userId = this.props.match.params.userId;
+        let userId: number | null = +this.props.match.params.userId;
         if (!userId) {
             userId = this.props.authorizedUserId;
             if (!userId) {
-                this.props.history.push('/login')
+                // todo: may be replace push with Redirect??
+                this.props.history.push("/login");
             }
         }
-        this.props.getUsersProFile(userId);
-        this.props.getStatus(userId);
+
+        if (!userId) {
+            console.error("ID should exists in URI params or in state ('authorizedUserId')");
+        } else {
+            this.props.getUserProfile(userId)
+            this.props.getStatus(userId)
+        }
     }
 
     componentDidMount() {
         this.refreshProfile();
     }
 
-    componentDidUpdate(prevProps: Readonly<PropsType>, prevState: Readonly<{}>, snapshot?: any) {
-        if (this.props.match.params.userId != prevProps.match.params.userId)
+    componentDidUpdate(prevProps: PropsType, prevState: PropsType) {
+        if (this.props.match.params.userId != prevProps.match.params.userId) {
             this.refreshProfile();
+        }
+    }
+
+    componentWillUnmount(): void {
     }
 
     render() {
-
         return (
-            <div>
-                <Profile {...this.props}
-                         isOwner={!this.props.match.params.userId}
-                         profile={this.props.profile}
-                         status={this.props.status}
-                         updateStatus={this.props.updateStatus}
-                         savePhoto={this.props.savePhoto}/>
-            </div>
+            <Profile {...this.props}
+                     isOwner={!this.props.match.params.userId}
+                     profile={this.props.profile}
+                     status={this.props.status}
+                     updateStatus={this.props.updateStatus}
+                     savePhoto={this.props.savePhoto}/>
         )
     }
 }
 
-export type ProfileType = {
-    profile: {
-        aboutMe: string
-        contacts: {
-            facebook: string
-            website: null | string
-            vk: string
-            twitter: string
-            instagram: string
-            youtube: null | string
-            github: string
-            mainLink: null | string
-        },
-        lookingForAJob: boolean
-        lookingForAJobDescription: string
-        fullName: string
-        userId: number
-        photos: {
-            small: string
-            large: string
-        }
-    },
-    status: string,
-    authorizedUserId: string,
-    isAuth: boolean
-
+let mapStateToProps = (state: AppStateType) => {
+    //console.log('mapStateToProps PROFILE')
+    return ({
+        profile: state.profilePage.profile,
+        status: state.profilePage.status,
+        authorizedUserId: state.auth.id,
+        isAuth: state.auth.isAuth
+    })
 }
 
-let mapStateToProps = (state): ProfileType => ({
-    profile: state.profilePage.profile,
-    status: state.profilePage.status,
-    authorizedUserId: state.auth.id,
-    isAuth: state.auth.isAuth,
-});
-
-
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {getUsersProFile, getStatus, updateStatus, savePhoto}),
-    withRouter,
-    //withAuthRedirect
-)(ProfileContainer)
+    connect(mapStateToProps, {getUserProfile:getUsersProFile, getStatus, updateStatus, savePhoto, saveProfile}),
+    withRouter
+)(ProfileContainer);
+
+
+
+

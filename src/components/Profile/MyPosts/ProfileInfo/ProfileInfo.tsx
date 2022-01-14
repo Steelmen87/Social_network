@@ -1,13 +1,21 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import s from './ProfileInfo.module.css';
 import {Preloader} from "../../../common/preloader/Preloader";
 import ProfileStatusWithHooks from "./ProfileStatusFunction";
 import userPhoto from "../../../../assets/images/user.png"
 import Contacts from "./Contacts";
 import ProfileDataForm from "./ProfileDataForm";
+import {useDispatch} from "react-redux";
+import {saveProfile} from "../../../../redux/profile-reduser";
 
-const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto}) => {
+
+const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto, saveProfile}) => {
     const [editMode, setEditMode] = useState(false)
+    /*const dispatch = useDispatch;
+    const userId = useSelector<AppStateType>(store => store.auth.id)
+    useEffect(() => {
+        dispatch(getUsersProFile(userId))
+    }, [editMode, saveProfile])*/
     if (!profile) {
         return <Preloader/>
     }
@@ -17,7 +25,8 @@ const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto}) => {
         }
     }
     const onSubmit = (formData) => {
-        console.log(formData)
+        saveProfile(formData)
+        setEditMode(false)
     }
 
     return (
@@ -48,6 +57,7 @@ const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto}) => {
 }
 
 const ProfileData = ({profile, isOwner, goToEditMode}) => {
+
     return <div>
         {isOwner && <div>
             <button onClick={goToEditMode}>Edit</button>
@@ -61,8 +71,9 @@ const ProfileData = ({profile, isOwner, goToEditMode}) => {
         {profile.lookingForAJob &&
             <div>
                 <strong>
-                    My professional skills:{profile.lookingForAJobDescription}
-                </strong>
+                    My professional skills:</strong>
+                {profile.lookingForAJobDescription}
+
             </div>}
         <div>
             <strong>About me:</strong>{profile.aboutMe}

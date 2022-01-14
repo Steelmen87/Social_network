@@ -1,4 +1,5 @@
 import {profileAPI, usersAPI} from "../api/api";
+import {AppStateType} from "./redux-store";
 
 const ADD_POST = 'ADD-POST';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
@@ -86,7 +87,7 @@ const profileReducer = (state: InitialStateType = initialState, action: TYPESALL
         case SET_STATUS: {
             return {...state, status: action.status}
         }
-        case "SAVE_PHOTO": {
+        case SAVE_PHOTO: {
             return {...state, profile: {...state.profile, photos: action.photos} as ProfileType}
         }
         default :
@@ -135,6 +136,15 @@ export const savePhoto = (file) => async (dispatch: any) => {
     let response = await profileAPI.savePhoto(file);
     if (response.data.resultCode === 0) {
         dispatch(savePhotoSuccess(response.data.data.photos));
+    }
+}
+
+export const saveProfile = (profile) => async (dispatch,getState) => {
+    debugger
+    const userId = getState().auth.id;
+    let response = await profileAPI.saveProfile(profile);
+    if (response.data.resultCode === 0) {
+        dispatch(getUsersProFile(userId));
     }
 }
 

@@ -6,7 +6,7 @@ const SET_USER_DATA = 'SET_USER_DATA';
 
 
 let initialState = {
-    id: null as (number | null),
+    id: null as number | null,
     email: null as string | null,
     login: null as string | null,
     isAuth: false,
