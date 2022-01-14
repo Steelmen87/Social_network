@@ -1,11 +1,13 @@
 import React from "react";
-import Contacts from "./Contacts";
+import s from "./ProfileInfo.module.css"
 import {createField, Input, Textarea} from "../../../common/FormsControls/FormsControls";
 import {reduxForm} from "redux-form";
 
 const ProfileDataForm = ({profile, handleSubmit, error}) => {
     return <form onSubmit={handleSubmit}>
-        <div><button>Save</button></div>
+        <div>
+            <button>Save</button>
+        </div>
         <div>
             <strong>Full name: </strong> {createField("full name", "fullName", [], Input)}
         </div>
@@ -21,9 +23,11 @@ const ProfileDataForm = ({profile, handleSubmit, error}) => {
             <strong>About me: </strong> {createField("about me", "aboutMe", [], Textarea)}
         </div>
         <div>
-            {/*<strong>Contacts :</strong>{Object.keys(profile.contacts).map(key => {
-            return <Contacts key={key} contactTitle={key} contactValue={profile.contacts[key]}/>
-        })}*/}
+            <strong>Contacts :</strong>{Object.keys(profile.contacts).map(key => {
+            return <div className={s.contact}>
+                <strong>{key} : </strong> {createField(key, "contacts." + key, [], Input)}
+            </div>
+        })}
         </div>
     </form>
 }

@@ -6,8 +6,7 @@ import userPhoto from "../../../../assets/images/user.png"
 import Contacts from "./Contacts";
 import ProfileDataForm from "./ProfileDataForm";
 import {getUsersProFile} from "../../../../redux/profile-reduser";
-import {useDispatch, useSelector} from "react-redux";
-import {AppStateType} from "../../../../redux/redux-store";
+import {useDispatch } from "react-redux";
 
 
 const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto, saveProfile}) => {
@@ -55,11 +54,10 @@ const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto, savePro
 }
 
 const ProfileData = ({profile, isOwner, goToEditMode}) => {
-
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getUsersProFile(18301));
-    }, [profile])
+    }, [])
     return <div>
         {isOwner && <div>
             <button onClick={goToEditMode}>Edit</button>
