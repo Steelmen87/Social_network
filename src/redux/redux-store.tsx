@@ -18,9 +18,7 @@ let rootReducer = combineReducers({
     app:appReducer
 })
 
-export type ActionsTypes = {
 
-}
 type PropertiesType<T> = T extends {[key:string]:infer U} ? U : never
 export type AppStateType = ReturnType<typeof rootReducer>
 

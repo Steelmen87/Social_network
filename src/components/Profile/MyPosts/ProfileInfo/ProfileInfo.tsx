@@ -5,17 +5,14 @@ import ProfileStatusWithHooks from "./ProfileStatusFunction";
 import userPhoto from "../../../../assets/images/user.png"
 import Contacts from "./Contacts";
 import ProfileDataForm from "./ProfileDataForm";
-import {useDispatch} from "react-redux";
-import {saveProfile} from "../../../../redux/profile-reduser";
+import {getUsersProFile} from "../../../../redux/profile-reduser";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateType} from "../../../../redux/redux-store";
 
 
 const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto, saveProfile}) => {
     const [editMode, setEditMode] = useState(false)
-    /*const dispatch = useDispatch;
-    const userId = useSelector<AppStateType>(store => store.auth.id)
-    useEffect(() => {
-        dispatch(getUsersProFile(userId))
-    }, [editMode, saveProfile])*/
+
     if (!profile) {
         return <Preloader/>
     }
@@ -34,8 +31,9 @@ const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto, savePro
             <div>
                 <img src={profile.photos.large || userPhoto} alt='' className={s.mainPhoto}/>
 
-                <ProfileStatusWithHooks status={status}
-                                        updateStatus={updateStatus}/>
+                <ProfileStatusWithHooks
+                    status={status}
+                    updateStatus={updateStatus}/>
                 {isOwner && <input type={"file"} onChange={onMainPhotoSelected}/>}
 
                 {editMode
@@ -58,6 +56,10 @@ const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto, savePro
 
 const ProfileData = ({profile, isOwner, goToEditMode}) => {
 
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getUsersProFile(18301));
+    }, [profile])
     return <div>
         {isOwner && <div>
             <button onClick={goToEditMode}>Edit</button>
@@ -69,12 +71,12 @@ const ProfileData = ({profile, isOwner, goToEditMode}) => {
             <strong>Looking for a job:</strong>{profile.lookingForAJob ? "yes" : "no"}
         </div>
         {profile.lookingForAJob &&
-            <div>
-                <strong>
-                    My professional skills:</strong>
-                {profile.lookingForAJobDescription}
+        <div>
+            <strong>
+                My professional skills:</strong>
+            {profile.lookingForAJobDescription}
 
-            </div>}
+        </div>}
         <div>
             <strong>About me:</strong>{profile.aboutMe}
         </div>
