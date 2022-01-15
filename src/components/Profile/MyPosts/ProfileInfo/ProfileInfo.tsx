@@ -59,7 +59,7 @@ const ProfileData = ({profile, isOwner, goToEditMode}) => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getUsersProFile(18301));
-    }, [])
+    }, [dispatch])
     return <div>
         {isOwner && <div>
             <button onClick={goToEditMode}>Edit</button>
