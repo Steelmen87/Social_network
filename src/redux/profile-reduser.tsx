@@ -140,13 +140,19 @@ export const savePhoto = (file) => async (dispatch: any) => {
 }
 
 export const saveProfile = (profile) => async (dispatch, getState) => {
-    const userId = getState().auth.id;
-    const response = await profileAPI.saveProfile(profile);
-    debugger
-    if (response.resultCode === 0) {
-        dispatch(getUsersProFile(userId));
+    const userId = getState().auth.id
+    const data = await profileAPI.saveProfile(profile)
+
+    if (data.resultCode === 0) {
+        if (userId != null) {
+            dispatch(getUsersProFile(userId))
+        } else {
+            throw new Error("userId can't be null")
+        }
     } else {
-        dispatch(stopSubmit("edit-profile", {_error: response.messages[0] }));
+        debugger
+        dispatch(stopSubmit("edit-profile", {_error: data.messages[0] }))
+        return Promise.reject(data.messages[0])
     }
 }
 

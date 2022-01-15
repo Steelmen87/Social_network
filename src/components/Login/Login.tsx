@@ -48,9 +48,7 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
     )
 }
 
-const LoginReduxForm = reduxForm<FormDataType>({
-    form: 'login'
-})(LoginForm)
+const LoginReduxForm = reduxForm<FormDataType>({form: 'login'})(LoginForm)
 type mapStateToPropsType = {
     isAuth:boolean
 }
