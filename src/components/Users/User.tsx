@@ -22,7 +22,7 @@ let User: React.FC<PropsType> = (props) => {
                 .filter(u => u.name.indexOf(search) > -1)
                 .map(u => <div key={u.id}>
                 <span>
-                <div>
+                <div className={styles.shadow}>
                     <NavLink to={'/profile/' + u.id}>
                 <img src={u.photos.small != null ? u.photos.small : userPhoto} className={styles.userPhoto}
                      alt=""/>

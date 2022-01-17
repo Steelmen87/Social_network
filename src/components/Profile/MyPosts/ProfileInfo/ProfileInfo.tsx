@@ -7,6 +7,8 @@ import Contacts from "./Contacts";
 import ProfileDataForm from "./ProfileDataForm";
 import {getUsersProFile} from "../../../../redux/profile-reduser";
 import {useDispatch} from "react-redux";
+import {Button} from "antd";
+import style from "../../../common/FormsControls/FormsControls.module.css";
 
 
 const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto, saveProfile}) => {
@@ -35,7 +37,9 @@ const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto, savePro
                 <ProfileStatusWithHooks
                     status={status}
                     updateStatus={updateStatus}/>
-                {isOwner && <input type={"file"} onChange={onMainPhotoSelected}/>}
+                {isOwner &&
+
+                <input type={"file"} onChange={onMainPhotoSelected}/>}
 
                 {editMode
                     ? <ProfileDataForm
@@ -60,9 +64,10 @@ const ProfileData = ({profile, isOwner, goToEditMode}) => {
     useEffect(() => {
         dispatch(getUsersProFile(18301));
     }, [dispatch])
-    return <div>
+    return <div className={style.shadow}>
         {isOwner && <div>
-            <button onClick={goToEditMode}>Edit</button>
+            {/*<button onClick={goToEditMode}>Edit</button>*/}
+            <Button type="primary" size="small" onClick={goToEditMode}>Edit</Button>
         </div>}
         <div>
             <strong>Full name: </strong>{profile.fullName}
