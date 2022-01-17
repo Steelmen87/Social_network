@@ -4,7 +4,6 @@ import {Link, Route, Redirect} from 'react-router-dom'
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-import style from "./App.module.css"
 import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainer from "./components/Profile/ProfileContainer";
 
@@ -14,10 +13,9 @@ import {compose} from "redux";
 import 'antd/dist/antd.css'
 
 import {LaptopOutlined, NotificationOutlined, UserOutlined} from '@ant-design/icons';
-import {Breadcrumb, Layout, Menu} from "antd";
+import {Layout, Menu} from "antd";
 import {AppHeader} from "./components/Header/Header";
 import {withSuspense} from './hoc/withSuspense';
-import cn from "classnames";
 import Horizont from "./Horizont-nav";
 
 //import LoginPage from "./components/Login/Login";
@@ -39,7 +37,7 @@ class App extends React.Component<any, any> {
         const {SubMenu} = Menu;
         const {Content, Footer, Sider} = Layout;
         const screenWidth = window.screen.width;
-        console.log(screenWidth)
+
         return (
             <Layout>
                 {screenWidth > 350 ? <AppHeader/>:""}
