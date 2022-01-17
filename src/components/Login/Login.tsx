@@ -1,7 +1,7 @@
 import React from "react";
-import {Field, reduxForm, InjectedFormProps} from 'redux-form'
+import { reduxForm, InjectedFormProps} from 'redux-form'
 import {createField, Input} from "../common/FormsControls/FormsControls";
-import {maxLengthCreator, required} from "../../utils/validators/validators";
+import { required} from "../../utils/validators/validators";
 import {connect} from "react-redux";
 import {login} from "../../redux/auth-reduser";
 import {Redirect} from "react-router-dom";
@@ -20,7 +20,7 @@ const LoginForm: React.FC<InjectedFormProps<LoginFormValuesType, LoginFormOwnPro
             {createField("Password", "password", [required], Input, {type: "password"})}
             {createField(undefined, "rememberMe", [], Input, {type: "checkbox"}, "remember me")}
 
-            { captchaUrl && <img src={captchaUrl} />}
+            { captchaUrl && <img src={captchaUrl} alt=""/>}
             { captchaUrl &&  createField("Symbols from image", "captcha", [required], Input, {}) }
 
 

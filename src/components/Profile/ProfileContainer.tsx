@@ -28,7 +28,7 @@ class ProfileContainer extends React.Component<PropsType> {
     }
 
     refreshProfile() {
-        let userId: number | null = +this.props.match.params.userId;
+        let userId: number | null = +this.props.match.params.userId;//withRouter - конектит с урлом
         if (!userId) {
             userId = this.props.authorizedUserId;
             if (!userId) {
