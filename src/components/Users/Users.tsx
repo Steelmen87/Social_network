@@ -3,6 +3,7 @@ import {setFilter, UserType} from "../../redux/users-reduser";
 import {useDispatch} from "react-redux";
 import PaginatorX from "../Paginator/PaginatorX";
 import User from "./User";
+import style from "./users.module.css"
 
 type PropsType = {
     totalUsersCount: number
@@ -39,7 +40,7 @@ let Users: React.FC<PropsType> = (props) => {
             currentPage={currentPage}
             onPageChanged={onPageChanged}
         />
-        <input placeholder={"search"} value={search} onChange={onSearchChange}/>
+        <input className={style.inputClass} placeholder={"search"} value={search} onChange={onSearchChange}/>
         <div><strong>Total Users Count: {totalUsersCount}</strong></div>
 
         <User {...props}/>
